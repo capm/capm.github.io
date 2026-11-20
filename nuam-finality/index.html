@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-trade interoperability and settlement finality in the nuam single market | capm.pe</title>
+  <meta name="description"
+    content="A research note comparing settlement finality law in Chile, Colombia and Peru as nuam moves from integrated trading to interoperable clearing, and what it means for tokenised securities.">
+  <meta name="author" content="Christian Portocarrero">
+  <link rel="canonical" href="https://capm.pe/nuam-finality/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Post-trade interoperability and settlement finality in the nuam single market">
+  <meta property="og:description"
+    content="What interoperable clearing in Chile, Colombia and Peru means for legal finality, and where a tokenised security would sit">
+  <meta property="og:url" content="https://capm.pe/nuam-finality/">
+  <style>
+    :root {
+      --ink: #0E1828;
+      --cream: #F4F1EA;
+      --graphite: #5A6573;
+      --stone: #B8B0A1;
+      --ochre: #B8782E;
+      --oxblood: #6B1F2A;
+      --font-display: "GT Sectra Display", "Tiempos Headline", "Source Serif 4", Georgia, "Times New Roman", serif;
+      --font-body: "Söhne", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Berkeley Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .container-wide {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    a {
+      color: var(--oxblood);
+      text-decoration: underline;
+      text-decoration-color: rgba(184, 120, 46, 0.6);
+      text-underline-offset: 2px;
+    }
+
+    a:hover {
+      text-decoration-color: var(--ochre);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(244, 241, 234, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 20px 0;
+      border-bottom: 0.5px solid rgba(14, 24, 40, 0.08);
+    }
+
+    .site-header .container-wide {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .monogram {
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    .site-nav a {
+      font-size: 14px;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .site-nav a:hover {
+      color: var(--oxblood);
+    }
+
+    .back-link {
+      padding: 40px 0 0;
+    }
+
+    .back-link a {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--graphite);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    article.note {
+      padding: 32px 0 80px;
+    }
+
+    article.note header {
+      margin-bottom: 40px;
+    }
+
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      margin: 0 0 14px;
+    }
+
+    article.note h1 {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin: 0 0 18px;
+    }
+
+    .subtitle {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 21px;
+      line-height: 1.4;
+      opacity: 0.8;
+      margin: 0 0 24px;
+    }
+
+    hr.title-rule {
+      border: none;
+      height: 0.5px;
+      background: var(--ink);
+      opacity: 0.2;
+      margin: 24px 0;
+    }
+
+    .meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--graphite);
+    }
+
+    .meta .sep {
+      margin: 0 8px;
+      opacity: 0.5;
+    }
+
+    .abstract {
+      background: rgba(184, 176, 161, 0.18);
+      padding: 28px 36px;
+      margin: 0 0 40px;
+      border-left: 2px solid var(--ochre);
+    }
+
+    article.note .abstract h2 {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      margin: 0 0 14px;
+      font-weight: 500;
+    }
+
+    .abstract ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .abstract li {
+      margin-bottom: 10px;
+    }
+
+    .abstract li:last-child {
+      margin-bottom: 0;
+    }
+
+    article.note h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin: 48px 0 16px;
+    }
+
+    article.note h3 {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 600;
+      margin: 28px 0 8px;
+    }
+
+    article.note p {
+      margin: 0 0 16px;
+    }
+
+    article.note ol.plain,
+    article.note ul.plain {
+      padding-left: 22px;
+      margin: 0 0 16px;
+    }
+
+    article.note ol.plain li,
+    article.note ul.plain li {
+      margin-bottom: 8px;
+    }
+
+    sup.ref {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 0;
+    }
+
+    sup.ref a {
+      text-decoration: none;
+    }
+
+    .fig {
+      margin: 28px 0 24px;
+      padding: 20px 16px 14px;
+      background: rgba(184, 176, 161, 0.12);
+      border: 0.5px solid rgba(14, 24, 40, 0.1);
+    }
+
+    .fig svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .fig figcaption {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: var(--graphite);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .table-wrap {
+      margin: 28px 0 12px;
+      overflow-x: auto;
+    }
+
+    table.cmp {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      line-height: 1.45;
+      min-width: 760px;
+    }
+
+    table.cmp caption {
+      caption-side: top;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--graphite);
+      padding-bottom: 10px;
+    }
+
+    table.cmp th,
+    table.cmp td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-bottom: 0.5px solid rgba(14, 24, 40, 0.15);
+    }
+
+    table.cmp thead th {
+      font-weight: 600;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    table.cmp tbody th {
+      font-weight: 600;
+      width: 19%;
+    }
+
+    table.cmp tbody tr:nth-child(even) {
+      background: rgba(184, 176, 161, 0.12);
+    }
+
+    .table-note {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--graphite);
+      margin: 0 0 24px;
+    }
+
+    .box {
+      border: 0.5px solid rgba(14, 24, 40, 0.25);
+      border-top: 2px solid var(--oxblood);
+      padding: 24px 32px 12px;
+      margin: 36px 0;
+      background: rgba(244, 241, 234, 0.6);
+    }
+
+    .box .box-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      margin: 0 0 6px;
+    }
+
+    article.note .box h3 {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 400;
+      margin: 0 0 14px;
+    }
+
+    .refs {
+      margin: 56px 0 0;
+      padding-top: 28px;
+      border-top: 0.5px solid rgba(14, 24, 40, 0.12);
+      font-size: 14px;
+    }
+
+    article.note .refs h2 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    .refs ol {
+      padding-left: 22px;
+    }
+
+    .refs li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .disclaimer {
+      font-size: 13px;
+      color: var(--graphite);
+      margin-top: 32px;
+    }
+
+    .site-footer {
+      border-top: 0.5px solid rgba(14, 24, 40, 0.12);
+      padding: 28px 0 48px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--graphite);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        font-size: 16px;
+      }
+
+      .container,
+      .container-wide {
+        padding: 0 20px;
+      }
+
+      article.note h1 {
+        font-size: 32px;
+      }
+
+      .abstract,
+      .box {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    @page {
+      margin: 14mm 17mm;
+    }
+
+    @media print {
+
+      .site-header,
+      .back-link,
+      .site-footer {
+        display: none;
+      }
+
+      body {
+        font-size: 9.5pt;
+        line-height: 1.4;
+        background: #fff;
+      }
+
+      .container,
+      .container-wide {
+        max-width: none;
+        padding: 0;
+      }
+
+      article.note h2 {
+        font-size: 13.5pt;
+        margin: 16pt 0 6pt;
+      }
+
+      article.note p {
+        margin: 0 0 7pt;
+      }
+
+      article.note header {
+        margin-bottom: 14pt;
+      }
+
+      .subtitle {
+        font-size: 12pt;
+        margin-bottom: 8pt;
+      }
+
+      hr.title-rule {
+        margin: 8pt 0;
+      }
+
+      .abstract {
+        padding: 10pt 14pt;
+        margin-bottom: 12pt;
+      }
+
+      .abstract li {
+        margin-bottom: 4pt;
+      }
+
+      table.cmp {
+        font-size: 8pt;
+        min-width: 0;
+      }
+
+      table.cmp th,
+      table.cmp td {
+        padding: 4pt 6pt;
+      }
+
+      .box {
+        padding: 10pt 14pt 4pt;
+        margin: 12pt 0;
+      }
+
+      .fig {
+        margin: 6pt 60pt 8pt;
+        padding: 6pt 8pt 5pt;
+      }
+
+      .refs {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        font-size: 8pt;
+        break-before: page;
+      }
+
+      .refs li {
+        margin-bottom: 2pt;
+      }
+
+      article.note ol.plain li {
+        margin-bottom: 4pt;
+      }
+
+      article.note {
+        padding: 0;
+      }
+
+      article.note h1 {
+        font-size: 19pt;
+      }
+
+      .box,
+      .abstract,
+      table.cmp tr {
+        break-inside: avoid;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="container-wide">
+      <a class="monogram" href="/">capm.</a>
+      <nav class="site-nav" aria-label="Primary"><a href="/#about">About</a><a href="/#experience">Experience</a></nav>
+    </div>
+  </header>
+
+  <div class="container back-link"><a href="/">&larr; capm.pe</a></div>
+
+  <article class="note">
+    <div class="container">
+
+      <header>
+        <p class="kicker">Research note · Post-trade and digital assets</p>
+        <h1>Post-trade interoperability and settlement finality in the nuam single market</h1>
+        <p class="subtitle">What interoperable clearing in Chile, Colombia and Peru means for legal finality, and where
+          a tokenised security would sit</p>
+        <hr class="title-rule">
+        <p class="meta">Christian Portocarrero<span class="sep">/</span>20 November 2026<span class="sep">/</span>Desk
+          review of public legal texts</p>
+      </header>
+
+      <section class="abstract" aria-labelledby="kf">
+        <h2 id="kf">Key findings</h2>
+        <ul>
+          <li>The three countries use the same legal method: a transfer order is final when a recognised system accepts
+            it, and the system's own rulebook determines the point in time at which this occurs.</li>
+          <li>This protection is territorial. Under MILA each trade settled in one system under one law, while under
+            nuam's interoperable clearing one trade can pass through two central counterparties and two different legal
+            systems.</li>
+          <li>The interoperability rules adopted between 2023 and 2026 are prudential. None of these rules recognises
+            the finality of a foreign system or aligns the moments of acceptance, and Peru leaves that sequence to be
+            determined by agreement between the CCPs.</li>
+          <li>The post-trade rules do not refer to distributed ledgers, so a token transfer outside a recognised system
+            has contractual finality only. The shortest route to tokenised securities is that the depository keeps its
+            own register on a ledger.</li>
+        </ul>
+      </section>
+      <h2 id="1-why-finality-and-why-now">1. Why finality, and why now</h2>
+      <p>Settlement finality is the moment in time when a transfer of securities or cash can no longer be reversed, even
+        if one of the participants becomes insolvent. It is established by statute, and without it a liquidator could
+        challenge the transfers made shortly before a participant's insolvency.</p>
+      <p>This issue is especially pertinent to Chile, Colombia and Peru at this time. One reason is nuam, the holding
+        company that integrates the Santiago, Colombia and Lima stock exchanges. Its operating model relies on one
+        common trading platform and three interoperable central counterparties (CCPs).<sup class="ref"><a
+            href="#r1">[1]</a></sup> In preparation for interoperable clearing, regulators have created the framework
+        for it to operate: Chile introduced a regime to recognise foreign CCPs through a change in the law in December
+        2023;<sup class="ref"><a href="#r2">[2]</a></sup> Colombia authorised CCPs to enter into interoperability
+        agreements by decree in August 2026;<sup class="ref"><a href="#r3">[3]</a></sup> and Peru, which did not
+        previously have a CCP, created the legal figure on 5 November 2026 and gave CAVALI six months to adapt its
+        rulebook.<sup class="ref"><a href="#r4">[4]</a></sup> Another reason is tokenisation. CCAF and Fii found that
+        there is still a lack of specificity on how custody, transfer and post-trade are handled in emerging markets,
+        and that Chile, Colombia and Peru are in the early stages of exploring what type of policies they will
+        implement.<sup class="ref"><a href="#r5">[5]</a></sup> In this note, I examine whether that finding holds up
+        when compared with the laws of Chile, Colombia and Peru.</p>
+      <h2 id="2-from-mila-to-nuam-what-changes-in-law">2. From MILA to nuam: what changes in law</h2>
+      <p>MILA integrated order routing and the post-trade process remained under national jurisdiction. In accordance
+        with articles 4.2 and 30.1 of the Peruvian regulation, clearing and settlement are subject to the rules of the
+        country in which the security is listed and traded.<sup class="ref"><a href="#r6">[6]</a></sup> Cross-border
+        holdings were processed using reciprocal omnibus accounts established between CAVALI and each foreign depository
+        (article 26). The entry that prevails is the one made in the depository in which the final holder of the
+        security maintains the account (article 29). CAVALI's record of foreign holdings is purely informational
+        (article 28.4). As such, there was only one settlement system, only one point at which finality occurred, and
+        only one official record for each transaction.</p>
+      <p>nuam gives up that simplicity to obtain something MILA did not deliver, a single pool of liquidity in which a
+        broker trades any of the three markets from home and faces only its local CCP, without a correspondent broker in
+        the other country. As soon as a trade is matched, it goes to the CCP of each intermediary's country, each CCP
+        represents its members before the other two, and settlement occurs in the depository of the country where the
+        security is registered.<sup class="ref"><a href="#r1">[1]</a></sup> This creates a legal relationship that MILA
+        did not have. If a Lima-based broker buys a Santiago-listed share from a Chilean broker there are three
+        positions (broker to Peruvian CCP, Peruvian CCP to Chilean CCP, Chilean CCP to broker), and the one in the
+        middle is new (Figure 1).</p>
+      <figure class="fig">
+        <svg viewBox="0 0 720 210" role="img" aria-labelledby="f1t f1d" xmlns="http://www.w3.org/2000/svg">
+          <title id="f1t">Legal relationships in a cross-border trade under interoperable clearing</title>
+          <desc id="f1d">A Lima broker faces the Peruvian CCP, which faces the Chilean CCP, which faces the Santiago
+            broker. The outer links are protected by Peruvian and Chilean finality statutes. The position between the
+            two CCPs is accepted once in each system, and only contract fixes the order of those two acceptances.</desc>
+          <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" fill="#0E1828">
+            <g fill="none" stroke="#0E1828" stroke-width="1">
+              <rect x="4" y="40" width="132" height="56" />
+              <rect x="198" y="40" width="132" height="56" />
+              <rect x="392" y="40" width="132" height="56" />
+              <rect x="584" y="40" width="132" height="56" />
+            </g>
+            <text x="70" y="64" text-anchor="middle" font-weight="600">Lima broker</text><text x="70" y="82"
+              text-anchor="middle" fill="#5A6573">buyer</text>
+            <text x="264" y="64" text-anchor="middle" font-weight="600">Peruvian CCP</text><text x="264" y="82"
+              text-anchor="middle" fill="#5A6573">ICLV-ECC</text>
+            <text x="458" y="64" text-anchor="middle" font-weight="600">Chilean CCP</text><text x="458" y="82"
+              text-anchor="middle" fill="#5A6573">CCLV</text>
+            <text x="650" y="64" text-anchor="middle" font-weight="600">Santiago broker</text><text x="650" y="82"
+              text-anchor="middle" fill="#5A6573">seller</text>
+            <g stroke="#0E1828" stroke-width="1">
+              <line x1="136" y1="68" x2="198" y2="68" />
+              <line x1="524" y1="68" x2="584" y2="68" />
+            </g>
+            <line x1="330" y1="68" x2="392" y2="68" stroke="#6B1F2A" stroke-width="2" stroke-dasharray="5 4" />
+            <g stroke="#B8B0A1" stroke-width="1">
+              <line x1="167" y1="76" x2="167" y2="128" />
+              <line x1="361" y1="76" x2="361" y2="128" />
+              <line x1="554" y1="76" x2="554" y2="128" />
+            </g>
+            <text x="167" y="146" text-anchor="middle" font-weight="600">Statute</text><text x="167" y="164"
+              text-anchor="middle" fill="#5A6573">Ley 29440, art. 6</text>
+            <text x="361" y="146" text-anchor="middle" font-weight="600" fill="#6B1F2A">Two acceptances</text><text
+              x="361" y="164" text-anchor="middle" fill="#5A6573">sequence set by the</text><text x="361" y="180"
+              text-anchor="middle" fill="#5A6573">interoperability agreement</text>
+            <text x="554" y="146" text-anchor="middle" font-weight="600">Statute</text><text x="554" y="164"
+              text-anchor="middle" fill="#5A6573">Ley 20.345, art. 24</text>
+          </g>
+        </svg>
+        <figcaption>Figure 1. A Lima broker buys a Santiago-listed share. The position between the two CCPs is new, each
+          CCP accepts it under its own rulebook, and only the agreement between them fixes the order of the two
+          acceptances.</figcaption>
+      </figure>
+      <p>Custody is not uniform either. The depositories of Peru and Colombia record the final beneficiary, while Chile
+        keeps omnibus accounts, so the model uses mirror accounts to carry the beneficiary information across the
+        link.<sup class="ref"><a href="#r1">[1]</a></sup></p>
+      <h2 id="3-finality-by-designation">3. Finality by designation</h2>
+      <p>The three finality statutes were written between 2005 and 2009 and follow the same design (Table 1).</p>
+    </div>
+    <div class="container-wide">
+      <div class="table-wrap">
+        <table class="cmp">
+          <caption>Table 1. Settlement finality and CCP interoperability in the three nuam jurisdictions</caption>
+          <thead>
+            <tr class="header">
+              <th></th>
+              <th>Chile</th>
+              <th>Colombia</th>
+              <th>Peru</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <th scope="row">Finality rule</th>
+              <td>Ley 20.345, art. 24</td>
+              <td>Ley 964 de 2005, art. 10</td>
+              <td>Ley 29440, art. 6</td>
+            </tr>
+            <tr class="even">
+              <th scope="row">An order is final when</th>
+              <td>A system accepts it</td>
+              <td>A clearing and settlement system accepts it</td>
+              <td>A recognised System accepts it</td>
+            </tr>
+            <tr class="odd">
+              <th scope="row">The moment is fixed by</th>
+              <td>The system's rules, approved by the CMF</td>
+              <td>The system's rules, approved by the SFC (art. 9)</td>
+              <td>The system's rules, within SMV criteria: funds and securities verified as available (Res. SMV
+                027-2012, art. 17)</td>
+            </tr>
+            <tr class="even">
+              <th scope="row">Foreign CCPs</th>
+              <td>Recognition by the CMF, with equivalence, a cooperation agreement and a central bank opinion (Title
+                VIII, art. 49)</td>
+              <td>Interoperability agreements filed with the SFC and the central bank 30 business days before they start
+                (Decreto 1013 de 2026)</td>
+              <td>Interoperability agreements with prior SMV approval (Res. SMV 013-2026, arts. 138 to 140)</td>
+            </tr>
+            <tr class="odd">
+              <th scope="row">Finality across the link</th>
+              <td>Only the rule on notification of court orders (art. 25) is extended to recognised foreign CCPs</td>
+              <td>The moment of finality is not in the minimum content of the agreement (art. 2.13.1.1.19)</td>
+              <td>The agreement fixes when orders become irrevocable "in their respective settlement systems" (art.
+                139(g))</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">Author's reading of the published texts.<sup class="ref"><a href="#r7">[7]</a></sup><sup
+          class="ref"><a href="#r8">[8]</a></sup><sup class="ref"><a href="#r4">[4]</a></sup><sup class="ref"><a
+            href="#r2">[2]</a></sup><sup class="ref"><a href="#r9">[9]</a></sup><sup class="ref"><a
+            href="#r3">[3]</a></sup></p>
+    </div>
+    <div class="container">
+      <p>Finality is granted to orders accepted by a system recognised by either the law or the authority supervising
+        the system, and not to transfers in general; in Peru an arrangement that has not been recognised is excluded
+        from this protection (articles 2 to 4).<sup class="ref"><a href="#r7">[7]</a></sup> The moment of acceptance is
+        determined by the system's own rulebook, which is in line with Principle 8 of the Principles for Financial
+        Market Infrastructures,<sup class="ref"><a href="#r10">[10]</a></sup> and it means that three CCPs and three
+        depositories can each have a different time of acceptance. Protection is territorial, since each statute is an
+        exception to the insolvency law of the country where it applies. Peru contemplated linked systems, since an
+        order accepted in one System and settled in another keeps its effects from the first acceptance (article 6), but
+        both have to be Systems recognised under Peruvian law.</p>
+      <p>The interoperability rules do not close this gap, and they were not designed to. A regulation or a decree
+        cannot extend an insolvency exception that is set in a statute. They are prudential rules. Peru and Colombia
+        require bilateral collateral between the CCPs, restrict the mutualisation of losses across the link, and require
+        a cooperation agreement between supervisors.<sup class="ref"><a href="#r4">[4]</a></sup><sup class="ref"><a
+            href="#r3">[3]</a></sup> Chile works differently: the law allows a CCP to sign agreements with foreign
+        entities under criteria that the CMF may set, and Title VIII lets the CMF recognise foreign CCPs. However, I
+        have not found equivalent conditions in the law or in the current CCLV rulebook, so they will depend on CMF
+        rules that are still to come.<sup class="ref"><a href="#r2">[2]</a></sup> On default resources all three CCPs
+        end up with the same result, cover for their two largest exposures, although in Chile and Colombia this is set
+        in their own rulebooks.<sup class="ref"><a href="#r11">[11]</a></sup></p>
+      <p>On finality, the rules of Peru and Colombia provide for each CCP to act as a counterparty of the other, so the
+        position between the two CCPs is accepted on each side by a recognised system and protected by the relevant
+        national law. However, there is no provision on the sequence in which the two acceptances are to occur, or on
+        whether they will be recognised outside their respective jurisdictions. Peru requires the CCPs to agree the
+        sequence, Colombia does not refer to the issue, and Chile applies the provisions on notification of court orders
+        to recognised foreign CCPs, but does not explicitly apply the finality rule. The risk lies in the interim
+        period. If an insolvency order is issued against a clearing member after its home CCP has accepted the trade and
+        before the foreign CCP has accepted the corresponding position, two courts would apply two statutes, and the
+        agreement entered into by the two CCPs would not bind a liquidator in the other jurisdiction. Principles 1 and
+        20 require a legal basis that is enforceable in all relevant jurisdictions, and require linked infrastructures
+        to identify the legal risk associated with the link.<sup class="ref"><a href="#r10">[10]</a></sup> The Banco
+        Central de Reserva del Perú and the Banco de la República, in their 2026 reports, both include legal risk among
+        the conditions for interoperability.<sup class="ref"><a href="#r12">[12]</a></sup><sup class="ref"><a
+            href="#r13">[13]</a></sup></p>
+      <h2 id="4-where-a-tokenised-security-would-sit">4. Where a tokenised security would sit</h2>
+      <p>I found no reference to distributed ledgers or tokens in the post-trade rules and infrastructure rulebooks of
+        the three countries. The only recognition is on the cash side. Chile's Fintec Law treats representations of
+        money recorded on distributed ledgers as payment orders and means of payment, provided they meet the standards
+        set by the Central Bank.<sup class="ref"><a href="#r14">[14]</a></sup></p>
+      <p>Read together with the previous section, this means that a transfer of securities recorded on a ledger outside
+        a recognised system is not covered by the finality statute. The transfer may have become final within the
+        network (the ledger was updated and the network members consider the record as settled), and still be open to
+        challenge by a liquidator, because no law makes it irrevocable. On some public networks even this first type of
+        finality is a matter of probability for a period of time.<sup class="ref"><a href="#r5">[5]</a></sup><sup
+          class="ref"><a href="#r15">[15]</a></sup> Atomic delivery versus payment eliminates the time gap between the
+        two sides of the transaction; however, it does not determine which law protects either side against reversal.
+      </p>
+      <p>Other jurisdictions have accepted weaker protection in exchange for learning. For example, the European Union
+        allows a depository to run a DLT settlement system without designation under the Settlement Finality Directive
+        if it adopts compensatory measures against insolvency risk, with a cap of EUR 6 billion per infrastructure.<sup
+          class="ref"><a href="#r16">[16]</a></sup> The UK sandbox does not require designation either; each operator
+        has to define and disclose its moments of entry and irrevocability, and linked systems must adopt identical
+        moments.<sup class="ref"><a href="#r17">[17]</a></sup> The European Commission has since proposed converting the
+        Settlement Finality Directive into a Regulation, in part because the national rules had diverged.<sup
+          class="ref"><a href="#r18">[18]</a></sup> The nuam regulators can still prevent that kind of divergence, as
+        the three statutes share a design and interoperable clearing is not live yet.</p>
+      <aside class="box" aria-labelledby="box1">
+        <p class="box-label">Box 1</p>
+        <h3 id="box1">From book entry to token</h3>
+        <p>In the three countries a dematerialised security is its entry in the depository's register. In Peru the
+          register of an issue belongs to a single institution and transfer operates by book entry (Ley del Mercado de
+          Valores, articles 212, 213 and 215),<sup class="ref"><a href="#r19">[19]</a></sup> in Colombia the book entry
+          kept by a central depository is constitutive of the right (Ley 964, article 12),<sup class="ref"><a
+              href="#r9">[9]</a></sup> and in Chile transfers are made by debit and credit in the depository's accounts
+          (Ley 18.876, article 7).<sup class="ref"><a href="#r20">[20]</a></sup></p>
+        <p>A token issued by a platform over securities held in the depository would be in the same position as MILA's
+          mirror record, it gives information and no title. Another option is that the depository keeps its own register
+          on a ledger. I could not find a rule that prescribes the technology: Chile allows the register of a
+          dematerialised issue to be kept "by any means" that prevents tampering,<sup class="ref"><a
+              href="#r20">[20]</a></sup> Colombia sets principles such as priority and an unbroken chain of entries,<sup
+            class="ref"><a href="#r21">[21]</a></sup> and Peru sets outcomes such as security, back-ups and the ability
+          to reconstruct every entry.<sup class="ref"><a href="#r19">[19]</a></sup> In that case only the rulebook
+          changes, the ledger stays inside a recognised system and the finality statute applies. In Peru the ledger
+          would have to be operated by the depository alone, because the register of an issue is attributed to a single
+          institution and cannot be shared with other operators. Peru's criterion for acceptance, that funds and
+          securities are verified as available,<sup class="ref"><a href="#r8">[8]</a></sup> would coincide with
+          settlement itself in an atomic transaction. This is my reading and each supervisor would have to confirm it.
+          Tokens issued natively, without a depository, would need legislation.<sup class="ref"><a
+              href="#r22">[22]</a></sup></p>
+      </aside>
+      <h2 id="5-policy-considerations">5. Policy considerations</h2>
+      <p>I order the options by the legal effort they require. The first three do not need any change in the law.</p>
+      <ol class="plain">
+        <li><strong>Require the finality sequence as a condition of approval.</strong> The SMV approves interoperability
+          agreements in advance; the SFC receives these agreements before they start and may ask for changes; and the
+          CMF has the authority to set criteria for agreements with foreign entities. The three supervisors could
+          require a common sequence of acceptance moments for the CCPs and depositories involved in an agreement,
+          defined in the same terms in each rulebook.</li>
+        <li><strong>Set up a supervisory college.</strong> The three securities supervisors and the three central banks
+          could oversee the link jointly, in line with Responsibility E,<sup class="ref"><a href="#r10">[10]</a></sup>
+          and commission legal opinions on whether the courts of each country would respect a transfer accepted by a
+          linked foreign system. Although a legal opinion is not law, it would identify the risks involved and tell the
+          legislators what changes need to be made.</li>
+        <li><strong>Require disclosure.</strong> Each infrastructure would disclose its finality rules for interoperable
+          trades, much like the UK requires of its sandbox operators.</li>
+        <li><strong>Test a tokenised leg inside the perimeter.</strong> Colombia's regulation includes a controlled
+          testing space, and in 2021 its supervisor authorised a blockchain bond pilot.<sup class="ref"><a
+              href="#r21">[21]</a></sup><sup class="ref"><a href="#r5">[5]</a></sup> The Peruvian securities regulator
+          has the evaluation of a regulatory sandbox on its agenda for 2027. A joint test with value limits would give
+          evidence on finality without changing the law.</li>
+        <li><strong>Legislate mutual recognition of finality.</strong> Each statute would protect the orders accepted by
+          a recognised foreign system. Chile's Title VIII provides the conditions, while Peru's rule on linked systems
+          provides the effect.</li>
+      </ol>
+      <p>The first three options should be implemented before interoperable clearing goes live.</p>
+      <h2 id="6-scope-and-limits">6. Scope and limits</h2>
+      <p>This document is a review of public legal texts and official reports published up to 12 November 2026. It is
+        not intended to provide legal advice. Because CAVALI's revised rulebook and the agreements between the CCPs are
+        not yet publicly available, I reviewed the general framework, as opposed to the specific details of the final
+        arrangements. AI tools were used to support data collection and the writing of this document.</p>
+
+      <section class="refs" aria-labelledby="refs">
+        <h2 id="refs">References</h2>
+        <ol type="1">
+          <li id="r1">nuam. <em>Equities Operating Model</em>, final version, 4 October 2024, paras. 44 to 60 and 105.
+          </li>
+          <li id="r2">Chile. Ley N° 20.345, arts. 13(6), 24, 25 and 49 (Title VIII, added by Ley N° 21.641 of 30
+            December 2023).</li>
+          <li id="r3">Colombia. Decreto 1013 de 2026 (5 August 2026), adding arts. 2.13.1.1.18 and 2.13.1.1.19 to
+            Decreto 2555 de 2010.</li>
+          <li id="r4">Peru. Resolución SMV N° 013-2026-SMV/01 (5 November 2026), amending the Reglamento de
+            Instituciones de Compensación y Liquidación de Valores, arts. 135 and 138 to 140.</li>
+          <li id="r5">CCAF and Fii (2026). <em>Tokenised Assets: Pathways for Emerging Market and Developing
+              Economies</em>, executive summary, section 5 and Box 5.1.</li>
+          <li id="r6">Peru. Resolución CONASEV N° 107-2010-EF/94.01.1, Reglamento del Mercado Integrado Latinoamericano,
+            arts. 4, 26 and 28 to 30.</li>
+          <li id="r7">Peru. Ley N° 29440, Ley de los Sistemas de Pagos y de Liquidación de Valores, arts. 2 to 4 and 6.
+          </li>
+          <li id="r8">Peru. Resolución SMV N° 027-2012-SMV/01, Reglamento de los Sistemas de Liquidación de Valores,
+            art. 17.</li>
+          <li id="r9">Colombia. Ley 964 de 2005, arts. 9, 10 and 12.</li>
+          <li id="r10">CPSS and IOSCO (2012). <em>Principles for Financial Market Infrastructures</em>, Principles 1, 8
+            and 20, and Responsibility E.</li>
+          <li id="r11">CCLV Contraparte Central, <em>Normas de Funcionamiento</em>, Section C, 1.6.4; and Cámara de
+            Riesgo Central de Contraparte de Colombia, <em>Reglamento de Funcionamiento</em> (December 2025), art.
+            2.2.1.</li>
+          <li id="r12">Banco Central de Reserva del Perú. <em>Reporte del Sistema Nacional de Pagos y del Sector Fintech
+              en Perú</em>, March 2026, Box 3.</li>
+          <li id="r13">Banco de la República. <em>Reporte de la Infraestructura Financiera e Instrumentos de Pago
+              2026</em>, Box 2.</li>
+          <li id="r14">Chile. Ley N° 21.521 (Ley Fintec), arts. 31 and 37.</li>
+          <li id="r15">IOSCO (2025). <em>Tokenization of Financial Assets</em>, Final Report FR/17/25.</li>
+          <li id="r16">Regulation (EU) 2022/858 (DLT Pilot Regime), arts. 3 and 5(7).</li>
+          <li id="r17">Bank of England. <em>Digital Securities Sandbox Rules Instrument 2024</em>, Annex A, arts. 39 and
+            48(8); and Bank of England and FCA, <em>Guidance on the operation of the Digital Securities Sandbox</em>
+            (updated June 2026).</li>
+          <li id="r18">European Commission. Proposal for a Regulation on settlement finality, COM(2025) 941 final, 4
+            December 2025.</li>
+          <li id="r19">Peru. Decreto Legislativo N° 861, Ley del Mercado de Valores, arts. 212, 213 and 215; and
+            Resolución CONASEV N° 031-99-EF/94.10, arts. 18 and 69.</li>
+          <li id="r20">Chile. Ley N° 18.876, art. 7; and Norma de Carácter General N° 77 (1998), section I.</li>
+          <li id="r21">Colombia. Decreto 2555 de 2010, arts. 2.14.1.1.1 and 2.14.4.1.10 (register of the depositories)
+            and art. 2.35.7.1.1 (controlled testing space).</li>
+          <li id="r22">UNIDROIT (2023). <em>Principles on Digital Assets and Private Law</em>.</li>
+        </ol>
+
+        <p class="disclaimer">The author works in financial supervision in Peru. This note draws only on public sources.
+          The views are the author's own and do not represent those of any institution.</p>
+      </section>
+
+    </div>
+  </article>
+
+  <footer class="site-footer">
+    <div class="container-wide">capm.pe · Christian Portocarrero · 2026</div>
+  </footer>
+</body>
+
+</html>
